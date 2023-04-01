@@ -73,7 +73,7 @@ function makeGrid() {
           movePiece(selected, squareNum);
           selected = null;
         }
-        validMovesInfo = findValidMoves();
+        validMovesInfo = findValidMoves(board, selected, enPassent, blackCastle, whiteCastle);
         validMoves = validMovesInfo.map(move => move[0])
         makeGrid();
       }

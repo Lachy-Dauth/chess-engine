@@ -1,4 +1,4 @@
-function findValidMoves() {
+function findValidMoves(board, selected, enPassent, blackCastle, whiteCastle) {
   let file = selected%8;
   let rank = Math.floor(selected/8);
   let array = [];
