@@ -49,6 +49,10 @@
   border-radius: 20px;
 }
 
+.moved {
+  border: 10px solid rgba(171, 151, 0, 0.494);
+}
+
 .light {
   background-color: wheat;
 }
@@ -59,4 +63,10 @@
 
 .unactive {
   background-color: grey;
+}
+.evaluation {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  font-size: 50px;
+  padding: 10px;
 }

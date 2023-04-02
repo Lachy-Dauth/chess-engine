@@ -1,8 +1,9 @@
 const chessBoard = document.querySelector(".chess-board");
 const promotionOptionsUI = document.querySelector(".promotion-options-container");
+const evaluationNumberUI = document.querySelector(".evaluation");
 
 const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-const board = fenToBoard(fen);
+let board = fenToBoard(fen);
 const pieces = {
   'P': '\u2659',
   'R': '\u2656',
@@ -26,6 +27,7 @@ let whiteCastle = [true, true];
 let blackCastle = [true, true];
 let promotion = null;
 let promotionOptions = ["q", "n", "b", "r"]
+let moved = [];
 
 console.log(board);
 
@@ -38,7 +40,7 @@ function makeGrid() {
     if (board[i] != null) {
       square.innerHTML = pieces[board[i]];
     }
-
+  
     // add class for css styling
     square.classList.add("square");
     // add data tag for indexing the squares
@@ -58,6 +60,9 @@ function makeGrid() {
     else if (validMoves.includes(i)) {
       square.classList.add("valid");
     }
+    else if (moved.includes(i)) {
+      square.classList.add("moved");
+    }
 
     // add function to check and respond to the square being clicked
     square.addEventListener("click", e => {
@@ -74,7 +79,7 @@ function makeGrid() {
           selected = null;
         }
         validMovesInfo = findValidMoves(board, selected, enPassent, blackCastle, whiteCastle);
-        validMoves = validMovesInfo.map(move => move[0])
+        validMoves = validMovesInfo.map(move => move[1])
         makeGrid();
       }
     });
@@ -120,11 +125,17 @@ function makeGrid() {
 
     promotionOptionsUI.appendChild(square);
   }
-
   if (!whitesTurn) {
-    let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle);
-
-    [enPassent, blackCastle, whiteCastle, whitesTurn] = movePieceAI(board, allValidMoves[Math.floor(Math.random() * allValidMoves.length)], enPassent, blackCastle, whiteCastle);
+    let eval = evaluation(board, enPassent, blackCastle, whiteCastle, whitesTurn, 1, -Infinity, Infinity, transpositionTable);
+    transpositionTable = {}
+    evaluationNumberUI.innerHTML = eval[0] / 100;
+    moved = [eval[1][0], eval[1][1]] 
+    let newPositionInfo = movePieceAI(eval[1], board, enPassent, blackCastle, whiteCastle);
+    board = newPositionInfo[0];
+    enPassent = newPositionInfo[1];
+    blackCastle = newPositionInfo[2];
+    whiteCastle = newPositionInfo[3];
+    whitesTurn = newPositionInfo[4];
     makeGrid();
   }
 }

@@ -9,12 +9,16 @@
   <script src="./find-moves.js"></script>
   <script src="./ui.js" defer></script>
   <script src="./minimax.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
 </head>
 <body>
   <div class="content-container">
     <div class="chess-board-container">
       <div class="chess-board"></div>
-      <div class="promotion-options-container">
+      <div class="promotion-options-container"></div>
+      <div class="stats">
+        <div class="evaluation"></div>
       </div>
     </div>
   </div>
