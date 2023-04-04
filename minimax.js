@@ -160,7 +160,7 @@ function evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle
       totalBlack += Math.round(piecesValues["kend"][blackKingPos] * 10 * (1 - (blackEndGame / 2000)))
     }
   }
-  return totalWhite + totalBlack;
+  return Math.round((((totalWhite + totalBlack) * 178000) / (totalWhite - totalBlack + 100000)));
 }
 
 function generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle) {

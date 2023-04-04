@@ -467,7 +467,7 @@ function kingInCheck(board, whitesTurn) {
         return true
       }
     }
-    if ((board[kingPos - 9] == "p" && file < 7) || (board[kingPos - 7] == "p" && file > 0)) {
+    if ((board[kingPos - 9] == "p" && file > 0) || (board[kingPos - 7] == "p" && file < 7)) {
       return true
     }
     for (let i = 1; i <= file; i++) {
