@@ -132,6 +132,9 @@ function makeGrid() {
 
     promotionOptionsUI.appendChild(square);
   }
+  if (!whitesTurn) {
+    aiMove();
+  }
 }
 makeGrid();
 
