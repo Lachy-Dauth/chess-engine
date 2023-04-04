@@ -1,8 +1,10 @@
 const chessBoard = document.querySelector(".chess-board");
 const promotionOptionsUI = document.querySelector(".promotion-options-container");
 const evaluationNumberUI = document.querySelector(".evaluation");
+const slider = document.getElementById("time-slider");
 
 const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+// const fen = '8/3P4/8/8/8/3k4/8/3K4';
 let board = fenToBoard(fen);
 const pieces = {
   'P': '\u2659',
@@ -25,6 +27,8 @@ let whitesTurn = true;
 let enPassent = null;
 let whiteCastle = [true, true];
 let blackCastle = [true, true];
+// let whiteCastle = [false, false];
+// let blackCastle = [false, false];
 let promotion = null;
 let promotionOptions = ["q", "n", "b", "r"]
 let moved = [];
@@ -78,7 +82,7 @@ function makeGrid() {
           movePiece(selected, squareNum);
           selected = null;
         }
-        validMovesInfo = findValidMoves(board, selected, enPassent, blackCastle, whiteCastle);
+        validMovesInfo = findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whiteCastle);
         validMoves = validMovesInfo.map(move => move[1])
         makeGrid();
       }
@@ -125,21 +129,22 @@ function makeGrid() {
 
     promotionOptionsUI.appendChild(square);
   }
-  if (!whitesTurn) {
-    let eval = evaluation(board, enPassent, blackCastle, whiteCastle, whitesTurn, 1, -Infinity, Infinity, transpositionTable);
-    transpositionTable = {}
-    evaluationNumberUI.innerHTML = eval[0] / 100;
-    moved = [eval[1][0], eval[1][1]] 
-    let newPositionInfo = movePieceAI(eval[1], board, enPassent, blackCastle, whiteCastle);
-    board = newPositionInfo[0];
-    enPassent = newPositionInfo[1];
-    blackCastle = newPositionInfo[2];
-    whiteCastle = newPositionInfo[3];
-    whitesTurn = newPositionInfo[4];
-    makeGrid();
-  }
 }
 makeGrid();
+
+function aiMove() {
+  let eval = iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, slider.value)
+  evaluationNumberUI.innerHTML = eval[0] / 100;
+  moved = [eval[1][0], eval[1][1]] 
+  console.log(eval[2])
+  let newPositionInfo = movePieceAI(eval[1], board, whitesTurn, enPassent, blackCastle, whiteCastle);
+  board = newPositionInfo[0];
+  whitesTurn = newPositionInfo[1];
+  enPassent = newPositionInfo[2];
+  blackCastle = newPositionInfo[3];
+  whiteCastle = newPositionInfo[4];
+  makeGrid();
+}
 
 function movePiece(startingPos, endingPos) {
   enPassent = null;

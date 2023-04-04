@@ -10,34 +10,66 @@ const piecesValues = {
   'n': [-280, -290, -300, -300, -300, -300, -290, -280, -290, -310, -330, -335, -335, -330, -310, -290, -300, -335, -340, -345, -345, -340, -335, -300, -300, -330, -345, -350, -350, -345, -330, -300, -300, -335, -345, -350, -350, -345, -335, -300, -300, -330, -340, -345, -345, -340, -330, -300, -290, -310, -330, -330, -330, -330, -310, -290, -280, -290, -300, -300, -300, -300, -290, -280],
   'b': [-310, -320, -320, -320, -320, -320, -320, -310, -320, -335, -330, -330, -330, -330, -335, -320, -320, -340, -340, -340, -340, -340, -340, -320, -320, -330, -340, -340, -340, -340, -330, -320, -320, -335, -335, -340, -340, -335, -335, -320, -320, -330, -335, -340, -340, -335, -330, -320, -320, -330, -330, -330, -330, -330, -330, -320, -310, -320, -320, -320, -320, -320, -320, -310],
   'q': [-880, -890, -890, -895, -895, -890, -890, -880, -890, -900, -900, -900, -900, -905, -900, -890, -890, -900, -905, -905, -905, -905, -905, -890, -895, -900, -905, -905, -905, -905, -900, -900, -895, -900, -905, -905, -905, -905, -900, -895, -890, -900, -905, -905, -905, -905, -900, -890, -890, -900, -900, -900, -900, -900, -900, -890, -880, -890, -890, -895, -895, -890, -890, -880],
-  'k': [-20, -30, -10, 0, 0, -10, -30, -20, -20, -20, 0, 0, 0, 0, -20, -20, 10, 20, 20, 20, 20, 20, 20, 10, 20, 30, 30, 40, 40, 30, 30, 20, 30, 40, 40, 50, 50, 40, 40, 30, 30, 40, 40, 50, 50, 40, 40, 30, 30, 40, 40, 50, 50, 40, 40, 30, 30, 40, 40, 50, 50, 40, 40, 30]
+  'k': [-20, -30, -10, 0, 0, -10, -30, -20, -20, -20, 0, 0, 0, 0, -20, -20, 10, 20, 20, 20, 20, 20, 20, 10, 20, 30, 30, 40, 40, 30, 30, 20, 30, 40, 40, 50, 50, 40, 40, 30, 30, 40, 40, 50, 50, 40, 40, 30, 30, 40, 40, 50, 50, 40, 40, 30, 30, 40, 40, 50, 50, 40, 40, 30],
+  'kend': [40, 30, 30, 30, 30, 30, 30, 40, 40, 20, 20, 20, 20, 20, 20, 40, 40, 20, 20, 10, 10, 20, 20, 40, 40, 20, 20, 0, 0, 20, 20, 40, 40, 20, 20, 10, 10, 20, 20, 40, 40, 20, 20, 20, 20, 20, 20, 40, 40, 30, 30, 30, 30, 30, 30, 40, 40, 40, 40, 40, 40, 40, 40, 40]
 };
 
-let transpositionTable = {
+let old_transpositionTable = {};
+let transpositionTable = {};
 
+let count = 0;
+function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, timeLimit) {
+  const startTime = Date.now();
+  let bestValue, bestMove, depth = 1;
+  old_transpositionTable = {}
+  count = 0;
+  while (true) {
+    const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, timeLimit - (Date.now() - startTime));
+    old_transpositionTable = transpositionTable;
+    transpositionTable = {};
+    if (value !== null) {
+      bestValue = value;
+      bestMove = move;
+      console.log([bestValue, bestMove, depth, count]);
+      count = 0;
+      depth++;
+      if (value == 1000000000 || value == -1000000000) {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+  
+  return [bestValue, bestMove, depth - 1];
 }
 
-
-function evaluation(board, enPassent, blackCastle, whiteCastle, whitesTurn, depth, alpha, beta, transpositionTable) {
+function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit) {
+  count += 1
   if (depth <= 0) {
-    return evaluationCaptures(board, enPassent, blackCastle, whiteCastle, whitesTurn, 100, alpha, beta, transpositionTable);
+    let score = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle)
+    return [score, null];
   }
+  let startTime = Date.now();
   if (whitesTurn) {
     let max = -Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      return evaluationDepth0(...movePieceAI(moveTwo, board, enPassent, blackCastle, whiteCastle, whitesTurn)) - evaluationDepth0(...movePieceAI(moveOne, board, enPassent, blackCastle, whiteCastle, whitesTurn))
+      return evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) - evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
     });
-    if (allValidMoves.length == 0){
+    if (allValidMoves.length == 0) {
       if (kingInCheck(board, whitesTurn)) {
-        return [-Infinity, null]
+        return [-1000000000, null]
       }
       return [0, null]
     }
     for (let i = 0; i < allValidMoves.length; i++) {
-      const move = allValidMoves[i];
-      let scoreTrans = transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)]
-      let score = scoreTrans == undefined ? evaluation(...movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn), depth - 1, alpha, beta, transpositionTable)[0] : scoreTrans;
+      let move = allValidMoves[i];
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, transpositionTable, old_transpositionTable, originalDepth, timeLimit - (Date.now() - startTime))[0];
+      if (Date.now() - startTime >= timeLimit || score == null) {
+        // Time's up
+        return [null, null];
+      }
       if (score > max) {
         max = score;
         bestMove = move;
@@ -49,97 +81,27 @@ function evaluation(board, enPassent, blackCastle, whiteCastle, whitesTurn, dept
         break;
       }
     }
-    transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)] = max;
     return [max, bestMove];
   }
   else {
     let min = Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      return evaluationDepth0(...movePieceAI(moveOne, board, enPassent, blackCastle, whiteCastle, whitesTurn)) - evaluationDepth0(...movePieceAI(moveTwo, board, enPassent, blackCastle, whiteCastle, whitesTurn))
-    });
-    if (allValidMoves.length == 0){
-      if (allValidMoves.length == 0){
-        if (kingInCheck(board, whitesTurn)) {
-          return [Infinity, null]
-        }
-        return [0, null]
-      }
-    }
-    for (let i = 0; i < allValidMoves.length; i++) {
-      const move = allValidMoves[i];
-      let scoreTrans = transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)]
-      let score = scoreTrans == undefined ? evaluation(...movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn), depth - 1, alpha, beta, transpositionTable)[0] : scoreTrans;
-      if (score < min) {
-        min = score;
-        bestMove = move;
-      }
-      if (score < beta) {
-        beta = score;
-      }
-      if (beta <= alpha) {
-        break;
-      }
-    }
-    transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)] = min;
-    return [min, bestMove];
-  }
-}
-
-function evaluationCaptures(board, enPassent, blackCastle, whiteCastle, whitesTurn, depth, alpha, beta, transpositionTable) {
-  if (depth <= 0) {
-    return [evaluationDepth0(board, enPassent, blackCastle, whiteCastle, whitesTurn), null];
-  }
-  if (whitesTurn) {
-    let max = evaluationDepth0(board, enPassent, blackCastle, whiteCastle, whitesTurn);
-    let bestMove = 0;
-    let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      return evaluationDepth0(...movePieceAI(moveTwo, board, enPassent, blackCastle, whiteCastle, whitesTurn)) - evaluationDepth0(...movePieceAI(moveOne, board, enPassent, blackCastle, whiteCastle, whitesTurn))
+      return evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) - evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
     });
     if (allValidMoves.length == 0){
       if (kingInCheck(board, whitesTurn)) {
-        return [-Infinity, null]
+        return [1000000000, null]
       }
       return [0, null]
     }
-    allValidMoves = allValidMoves.filter(move => isCapitalLetter(board[move[1]]) == !whitesTurn)
     for (let i = 0; i < allValidMoves.length; i++) {
-      const move = allValidMoves[i];
-      let scoreTrans = transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)]
-      let score = scoreTrans == undefined ? evaluationCaptures(...movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn), depth - 1, alpha, beta, transpositionTable)[0] : scoreTrans;
-      if (score > max) {
-        max = score;
-        bestMove = move;
+      let move = allValidMoves[i];
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, transpositionTable, old_transpositionTable, originalDepth, timeLimit - (Date.now() - startTime))[0];
+      if (Date.now() - startTime >= timeLimit || score == null) {
+        // Time's up
+        return [null, null];
       }
-      if (score > alpha) {
-        alpha = score;
-      }
-      if (beta <= alpha) {
-        break;
-      }
-    }
-    transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)] = max;
-    return [max, bestMove];
-  }
-  else {
-    let min = evaluationDepth0(board, enPassent, blackCastle, whiteCastle, whitesTurn);
-    let bestMove = 0;
-    let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      return evaluationDepth0(...movePieceAI(moveOne, board, enPassent, blackCastle, whiteCastle, whitesTurn)) - evaluationDepth0(...movePieceAI(moveTwo, board, enPassent, blackCastle, whiteCastle, whitesTurn))
-    });
-    if (allValidMoves.length == 0){
-      if (allValidMoves.length == 0){
-        if (kingInCheck(board, whitesTurn)) {
-          return [Infinity, null]
-        }
-        return [0, null]
-      }
-    }
-    allValidMoves = allValidMoves.filter(move => isCapitalLetter(board[move[1]]) == !whitesTurn)
-    for (let i = 0; i < allValidMoves.length; i++) {
-      const move = allValidMoves[i];
-      let scoreTrans = transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)]
-      let score = scoreTrans == undefined ? evaluationCaptures(...movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn), depth - 1, alpha, beta, transpositionTable)[0] : scoreTrans;
       if (score < min) {
         min = score;
         bestMove = move;
@@ -151,33 +113,68 @@ function evaluationCaptures(board, enPassent, blackCastle, whiteCastle, whitesTu
         break;
       }
     }
-    transpositionTable[hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle)] = min;
     return [min, bestMove];
   }
 }
 
-function evaluationDepth0(board, enPassent, blackCastle, whiteCastle, whitesTurn) {
-  let total = 0;
+function evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle) {
+  let totalWhite = 0;
+  let totalBlack = 0;
+  let whiteKingPos;
+  let blackKingPos;
   for (let i = 0; i < 64; i++) {
     if (board[i] != null) {
-      total += piecesValues[board[i]][i];
+      if (board[i] == "k") {
+        blackKingPos = i
+      }
+      else if (board[i] == "K") {
+        whiteKingPos = i
+      }
+      else if (isCapitalLetter(board[i])) {
+        totalWhite += piecesValues[board[i]][i]
+      }
+      else {
+        totalBlack += piecesValues[board[i]][i]
+      }
     }
   }
-  return total;
+  let whiteEndGame = 2000 - totalWhite + (2 * totalBlack)
+  let blackEndGame = 2000 - (2 * totalWhite) + (1 * totalBlack)
+  if (whiteEndGame < 0) {
+    totalWhite += piecesValues["K"][whiteKingPos]
+  }
+  else {
+    if (whiteEndGame > blackEndGame) {
+      totalWhite += 160
+      totalWhite -= 15 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
+      totalWhite -= Math.round(piecesValues["kend"][whiteKingPos] * 10 * (1 - (whiteEndGame / 2000)))
+    }
+  }
+  if (blackEndGame < 0) {
+    totalBlack += piecesValues["k"][blackKingPos]
+  }
+  else {
+    if (blackEndGame > whiteEndGame) {
+      totalBlack -= 160
+      totalBlack += 15 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
+      totalBlack += Math.round(piecesValues["kend"][blackKingPos] * 10 * (1 - (blackEndGame / 2000)))
+    }
+  }
+  return totalWhite + totalBlack;
 }
 
 function generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle) {
   let allValidMoves = [];
   for (let i = 0; i < 64; i++) {
     if (isCapitalLetter(board[i]) == whitesTurn) {
-      let validMoves = findValidMoves(board, i, enPassent, blackCastle, whiteCastle);
+      let validMoves = findValidMoves(board, i, whitesTurn, enPassent, blackCastle, whiteCastle);
       allValidMoves.push(...validMoves)
     }
   }
   return allValidMoves
 }
 
-function numberOfGames(board, enPassent, blackCastle, whiteCastle, whitesTurn, depth, startingDepth) {
+function numberOfGames(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, startingDepth) {
   if (depth == 0) {
     return 1
   }
@@ -186,8 +183,8 @@ function numberOfGames(board, enPassent, blackCastle, whiteCastle, whitesTurn, d
   let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle);
   for (let i = 0; i < allValidMoves.length; i++) {
     const move = allValidMoves[i];
-    arr.push([board[move[0]], String.fromCharCode(97 + move[0]%8) + String(8 - Math.floor(move[0]/8)) + String.fromCharCode(97 + move[1]%8) + String(8 - Math.floor(move[1]/8)), numberOfGames(...movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn), depth - 1)])
-    total += numberOfGames(...movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn), depth - 1, startingDepth);
+    arr.push([board[move[0]], String.fromCharCode(97 + move[0]%8) + String(8 - Math.floor(move[0]/8)) + String.fromCharCode(97 + move[1]%8) + String(8 - Math.floor(move[1]/8)), numberOfGames(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1)])
+    total += numberOfGames(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, startingDepth);
   }
   if (depth == startingDepth){
     console.table(arr)
@@ -195,9 +192,7 @@ function numberOfGames(board, enPassent, blackCastle, whiteCastle, whitesTurn, d
   return total
 }
 
-console.log(numberOfGames(board, enPassent, blackCastle, whiteCastle, whitesTurn, 3, 3))
-
-function movePieceAI([startingPos, endingPos, promotionPiece], old_board, old_enPassent, old_blackCastle, old_whiteCastle, old_whitesTurn) {
+function movePieceAI([startingPos, endingPos, promotionPiece], old_board, old_whitesTurn, old_enPassent, old_blackCastle, old_whiteCastle) {
   let board = [...old_board];
   let blackCastle = [...old_blackCastle];
   let whiteCastle = [...old_whiteCastle];
@@ -256,16 +251,14 @@ function movePieceAI([startingPos, endingPos, promotionPiece], old_board, old_en
     board[endingPos] = board[startingPos];
     board[startingPos] = null;
   }
-  if ((Math.floor(endingPos/8) == 0 || Math.floor(endingPos/8) == 7) && (board[startingPos] == "p" || board[startingPos] == "P")) {
+  if ((Math.floor(endingPos/8) == 0 || Math.floor(endingPos/8) == 7) && (board[endingPos] == "p" || board[endingPos] == "P")) {
     board[endingPos] = promotionPiece;
   }
   let whitesTurn = !old_whitesTurn
-  return [board, enPassent, blackCastle, whiteCastle, whitesTurn]
+  return [board, whitesTurn, enPassent, blackCastle, whiteCastle]
 }
 
-function hashPosition(board, enPassent, whitesTurn, whiteCastle, blackCastle) {
-  let string = [enPassent == null ? 'o' : enPassent, ...board.map(char => char == null ? "o" : char), whitesTurn ? "w" : "b", ...whiteCastle.map(value => value? "y" : "n"), ...blackCastle.map(value => value? "y" : "n")].join("");
-  let array = CryptoJS.MD5(string).words;
-  let hash = array[0] * array[1];
-  return hash
+function hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle) {
+  let string = [enPassent == null ? 'o' : enPassent, ...board.map(char => char == null ? "o" : char), whitesTurn ? "w" : "b", ...whiteCastle.map(value => value ? "y" : "n"), ...blackCastle.map(value => value ? "y" : "n")].join("");
+  return string
 }

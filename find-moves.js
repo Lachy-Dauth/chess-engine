@@ -1,4 +1,4 @@
-function findValidMoves(board, selected, enPassent, blackCastle, whiteCastle) {
+function findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whiteCastle) {
   let file = selected%8;
   let rank = Math.floor(selected/8);
   let array = [];
@@ -306,7 +306,7 @@ function findValidMoves(board, selected, enPassent, blackCastle, whiteCastle) {
       }
       break;
     case "p":
-      let promotions = ["q", "n", "b", "c"]
+      let promotions = ["q", "n", "b", "r"]
       if (isCapitalLetter(board[selected + 8]) == null) {
         if (rank == 6) {
           for (let i = 0; i < promotions.length; i++) {
@@ -342,7 +342,7 @@ function findValidMoves(board, selected, enPassent, blackCastle, whiteCastle) {
       }
       break;
     case "P":
-      let promotionsW = ["Q", "N", "B", "C"];
+      let promotionsW = ["Q", "N", "B", "R"];
       if (isCapitalLetter(board[selected - 8]) == null) {
         if (rank == 1) {
           for (let i = 0; i < promotionsW.length; i++) {
@@ -378,11 +378,11 @@ function findValidMoves(board, selected, enPassent, blackCastle, whiteCastle) {
       }
       break;
   }
-  return array.filter(move => move[0] >= 0 && move[0] < 64).map(move => [selected, ...move]).filter(move => checkIfKingValid(move, board, enPassent, blackCastle, whiteCastle, whitesTurn));
+  return array.filter(move => move[0] >= 0 && move[0] < 64).map(move => [selected, ...move]).filter(move => checkIfKingValid(move, board, whitesTurn, enPassent, blackCastle, whiteCastle));
 }
 
-function checkIfKingValid(move, board, enPassent, blackCastle, whiteCastle, whitesTurn) {
-  let newPositionInfo = movePieceAI(move, board, enPassent, blackCastle, whiteCastle, whitesTurn);
+function checkIfKingValid(move, board, whitesTurn, enPassent, blackCastle, whiteCastle) {
+  let newPositionInfo = movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle);
   let new_board = newPositionInfo[0];
   return !kingInCheck(new_board, whitesTurn);
 }

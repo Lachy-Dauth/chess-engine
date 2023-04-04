@@ -7,8 +7,8 @@
   <title>Chess Engine</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./find-moves.js"></script>
-  <script src="./ui.js" defer></script>
   <script src="./minimax.js" defer></script>
+  <script src="./ui.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
 </head>
@@ -19,6 +19,10 @@
       <div class="promotion-options-container"></div>
       <div class="stats">
         <div class="evaluation"></div>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="10000" value="5000" class="slider" id="time-slider">
+        </div>
+        <button onclick="aiMove()">AI Move</button>
       </div>
     </div>
   </div>
