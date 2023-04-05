@@ -84,12 +84,12 @@ function makeGrid() {
         if (selected == squareNum) {
           selected = null;
         }
-        else if (selected == null && board[squareNum] != null && isCapitalLetter(board[squareNum]) === whitesTurn) {
-          selected = squareNum;
-        }
         else if (selected != null && validMoves.includes(squareNum)) {
           movePiece(selected, squareNum);
           selected = null;
+        }
+        else if (isCapitalLetter(board[squareNum]) === whitesTurn) {
+          selected = squareNum;
         }
         validMovesInfo = findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whiteCastle);
         validMoves = validMovesInfo.map(move => move[1])

@@ -51,6 +51,7 @@ let opening_table = {
 "ornbqkbnrppooppppoopoooooooopooooooPPooooooNoooooPPooPPPPRoBQKBNRbyyyy":[30,[6,21,null],"Book Move"],
 "ornbqkborppooppppoopoonooooopooooooPPooooooNoooooPPooPPPPRoBQKBNRwyyyy":[30,[52,44,null],"Book Move"],
 "ornbqkborppooppppoopoonooooopooooooPPooooooNoPoooPPoooPPPRoBQKBNRbyyyy":[20,[2,29,null],"Book Move"],
+"26rnbqkbnrppopppppoooooooooopoooooooooPoooooNoooooPPPPoPPPRoBQKBNRbyyyy":[40,[1,18,null],"Book Move"],
 }
 
 let count = 0;
