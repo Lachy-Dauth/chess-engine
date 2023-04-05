@@ -317,7 +317,7 @@ function findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whi
           array.push([selected + 8, null]);
         }
       }
-      if (colourSel !== isCapitalLetter(board[selected + 9]) && ((isCapitalLetter(board[selected + 9]) != null && file < 7) || (selected - 1 == enPassent && file < 7))) {
+      if (colourSel !== isCapitalLetter(board[selected + 9]) && ((isCapitalLetter(board[selected + 9]) != null && file < 7) || (selected + 1 == enPassent && file < 7))) {
         if (rank == 6) {
           for (let i = 0; i < promotions.length; i++) {
             array.push([selected + 9, promotions[i]]);
@@ -327,7 +327,7 @@ function findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whi
           array.push([selected + 9, null]);
         }
       }
-      if (colourSel !== isCapitalLetter(board[selected + 7]) && ((isCapitalLetter(board[selected + 7]) != null && file > 0) || (selected + 1 == enPassent && file > 0))) {
+      if (colourSel !== isCapitalLetter(board[selected + 7]) && ((isCapitalLetter(board[selected + 7]) != null && file > 0) || (selected - 1 == enPassent && file > 0))) {
         if (rank == 6) {
           for (let i = 0; i < promotions.length; i++) {
             array.push([selected + 7, promotions[i]]);
@@ -658,7 +658,7 @@ function findValidCaptures(board, selected, whitesTurn, enPassent, blackCastle, 
       break;
     case "p":
       let promotions = ["q", "n", "b", "r"]
-      if (colourSel !== isCapitalLetter(board[selected + 9]) && ((isCapitalLetter(board[selected + 9]) != null && file < 7) || (selected - 1 == enPassent && file < 7))) {
+      if (colourSel !== isCapitalLetter(board[selected + 9]) && ((isCapitalLetter(board[selected + 9]) != null && file < 7) || (selected + 1 == enPassent && file < 7))) {
         if (rank == 6) {
           for (let i = 0; i < promotions.length; i++) {
             array.push([selected + 9, promotions[i]]);
@@ -668,7 +668,7 @@ function findValidCaptures(board, selected, whitesTurn, enPassent, blackCastle, 
           array.push([selected + 9, null]);
         }
       }
-      if (colourSel !== isCapitalLetter(board[selected + 7]) && ((isCapitalLetter(board[selected + 7]) != null && file > 0) || (selected + 1 == enPassent && file > 0))) {
+      if (colourSel !== isCapitalLetter(board[selected + 7]) && ((isCapitalLetter(board[selected + 7]) != null && file > 0) || (selected - 1 == enPassent && file > 0))) {
         if (rank == 6) {
           for (let i = 0; i < promotions.length; i++) {
             array.push([selected + 7, promotions[i]]);
