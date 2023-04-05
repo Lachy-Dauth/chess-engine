@@ -1,7 +1,7 @@
 .chess-board {
   aspect-ratio: 1/1;
   display: grid;
-  width: 600px;
+  width: 720px;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
   border: 10px outset sienna;
@@ -11,8 +11,8 @@
 .promotion-options-container {
   display: grid;
   grid-template-rows: repeat(4, 1fr);
-  width: 75px;
-  height: 300px;
+  width: 90px;
+  height: 360px;
 }
 
 .chess-board-container {
@@ -20,6 +20,7 @@
 }
 
 .square {
+  font-family: "Arial Unicode MS";
   transition: all 0.5s;
   display: flex;
   align-items: center;
@@ -75,4 +76,8 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
+}
+
+input, button {
+  font-size: 20px;
 }
