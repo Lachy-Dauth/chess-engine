@@ -2,6 +2,11 @@ const chessBoard = document.querySelector(".chess-board");
 const promotionOptionsUI = document.querySelector(".promotion-options-container");
 const evaluationNumberUI = document.querySelector(".evaluation");
 const slider = document.getElementById("time-slider");
+const cpValueIn = document.getElementById("cp-book-move-value");
+const bookMoveAddBtn = document.getElementById("add-book-move-value");
+const copyBook = document.getElementById("copy-book-moves");
+
+let tempBook = {};
 
 const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 // const fen = '5R2/4R3/8/8/8/3k4/8/7K';
@@ -32,6 +37,8 @@ let blackCastle = [true, true];
 let promotion = null;
 let promotionOptions = ["q", "n", "b", "r"]
 let moved = [];
+
+let moveForBook = [];
 
 let previousPositions = [hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)]
 
@@ -90,6 +97,17 @@ function makeGrid() {
       }
     });
 
+    square.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      let squareNum = Number(e.target.getAttribute('data-square-num'));
+      if (selected != null && validMoves.includes(squareNum)) {
+        moveForBook = [selected, squareNum, null]
+        selected = null;
+      }
+      validMoves = validMovesInfo.map(move => move[1])
+      makeGrid();
+    });
+
     chessBoard.appendChild(square); // places the cell
   }
   
@@ -132,12 +150,23 @@ function makeGrid() {
 
     promotionOptionsUI.appendChild(square);
   }
+  bookMoveAddBtn.disabled = opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] != undefined
 }
 makeGrid();
 
 function aiMove() {
   let eval = iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, slider.value)
-  evaluationNumberUI.innerHTML = eval[0] / 100;
+  if (eval[0] == 1000000000) {
+    eval[0] = "M" + String(eval[2])
+    evaluationNumberUI.innerHTML = eval[0]
+  }
+  else if (eval[0] == -1000000000) {
+    eval[0] = "-M" + String(eval[2])
+    evaluationNumberUI.innerHTML = eval[0]
+  }
+  else {
+    evaluationNumberUI.innerHTML = eval[0] / 100;
+  }
   moved = [eval[1][0], eval[1][1]] 
   console.log(eval[2])
   let newPositionInfo = movePieceAI(eval[1], board, whitesTurn, enPassent, blackCastle, whiteCastle);
@@ -150,12 +179,22 @@ function aiMove() {
   makeGrid();
 }
 
+function addBookValue() {
+  tempBook[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] = [Number(cpValueIn.value), moveForBook, "Book Move"]
+  opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] = [Number(cpValueIn.value), moveForBook, "Book Move"]
+  aiMove()
+}
+
+function copyNewBook() {
+  navigator.clipboard.writeText(JSON.stringify(tempBook).replaceAll('"Book Move"],', '"Book Move"],\n').replace("{", "").replace("}", ""))
+}
+
 function movePiece(startingPos, endingPos) {
-  enPassent = null;
   if (board[startingPos] == "p" || board[startingPos] == "P") {
     if (startingPos%8 != endingPos%8 && board[endingPos] == null) {
       board[enPassent] = null;
     }
+    enPassent = null;
     if (Math.abs(Math.floor(startingPos/8) - Math.floor(endingPos/8)) == 2) {
       enPassent = endingPos;
     }
@@ -165,9 +204,11 @@ function movePiece(startingPos, endingPos) {
   }
   else if (board[startingPos] == "k") {
     blackCastle = [false, false];
+    enPassent = null;
   }
   else if (board[startingPos] == "K") {
     whiteCastle = [false, false];
+    enPassent = null;
   }
   if (endingPos == 0 || startingPos == 0) {
     blackCastle[0] = false;

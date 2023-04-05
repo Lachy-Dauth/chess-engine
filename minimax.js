@@ -1,11 +1,11 @@
 const piecesValues = {
-  'P': [100, 100, 100, 100, 100, 100, 100, 100, 150, 150, 150, 150, 150, 150, 150, 150, 110, 110, 120, 130, 130, 120, 110, 110, 105, 105, 110, 125, 125, 110, 105, 105, 100, 100, 100, 120, 120, 100, 100, 100, 105, 95, 90, 100, 100, 90, 95, 105, 105, 110, 110, 80, 80, 110, 110, 105, 100, 100, 100, 100, 100, 100, 100, 100],
+  'P': [90, 90, 90, 90, 90, 90, 90, 90, 140, 140, 140, 150, 150, 140, 140, 140, 100, 100, 110, 130, 130, 110, 100, 100, 95, 95, 100, 120, 125, 100, 95, 95, 90, 90, 90, 115, 120, 90, 90, 90, 95, 85, 80, 90, 90, 80, 85, 95, 95, 100, 100, 75, 65, 100, 100, 95, 90, 90, 90, 90, 90, 90, 90, 90],
   'R': [500, 500, 500, 500, 500, 500, 500, 500, 505, 510, 510, 510, 510, 510, 510, 505, 495, 500, 500, 500, 500, 500, 500, 495, 495, 500, 500, 500, 500, 500, 500, 495, 495, 500, 500, 500, 500, 500, 500, 495, 495, 500, 500, 500, 500, 500, 500, 495, 495, 500, 500, 500, 500, 500, 500, 495, 500, 500, 500, 505, 505, 500, 500, 500],
   'N': [280, 290, 300, 300, 300, 300, 290, 280, 290, 310, 330, 330, 330, 330, 310, 290, 300, 330, 340, 345, 345, 340, 330, 300, 300, 335, 345, 350, 350, 345, 335, 300, 300, 330, 345, 350, 350, 345, 330, 300, 300, 335, 340, 345, 345, 340, 335, 300, 290, 310, 330, 335, 335, 330, 310, 290, 280, 290, 300, 300, 300, 300, 290, 280],
   'B': [310, 320, 320, 320, 320, 320, 320, 310, 320, 330, 330, 330, 330, 330, 330, 320, 320, 330, 335, 340, 340, 335, 330, 320, 320, 335, 335, 340, 340, 335, 335, 320, 320, 330, 340, 340, 340, 340, 330, 320, 320, 340, 340, 340, 340, 340, 340, 320, 320, 335, 330, 330, 330, 330, 335, 320, 310, 320, 320, 320, 320, 320, 320, 310],
   'Q': [880, 890, 890, 895, 895, 890, 890, 880, 890, 900, 900, 900, 900, 900, 900, 890, 890, 900, 905, 905, 905, 905, 900, 890, 895, 900, 905, 905, 905, 905, 900, 895, 900, 900, 905, 905, 905, 905, 900, 895, 890, 905, 905, 905, 905, 905, 900, 890, 890, 900, 905, 900, 900, 900, 900, 890, 880, 890, 890, 895, 895, 890, 890, 880],
   'K': [-30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -30, -40, -40, -50, -50, -40, -40, -30, -20, -30, -30, -40, -40, -30, -30, -20, -10, -20, -20, -20, -20, -20, -20, -10, 20, 20, 0, 0, 0, 0, 20, 20, 20, 30, 10, 0, 0, 10, 30, 20],
-  'p': [-100, -100, -100, -100, -100, -100, -100, -100, -105, -110, -110, -80, -80, -110, -110, -105, -105, -95, -90, -100, -100, -90, -95, -105, -100, -100, -100, -120, -120, -100, -100, -100, -105, -105, -110, -125, -125, -110, -105, -105, -110, -110, -120, -130, -130, -120, -110, -110, -150, -150, -150, -150, -150, -150, -150, -150, -100, -100, -100, -100, -100, -100, -100, -100],
+  'p': [-90, -90, -90, -90, -90, -90, -90, -90, -95, -100, -100, -75, -65, -100, -100, -95, -95, -85, -80, -90, -90, -80, -85, -95, -90, -90, -90, -115, -120, -90, -90, -90, -95, -95, -100, -120, -125, -100, -95, -95, -100, -100, -110, -130, -130, -110, -100, -100, -140, -140, -140, -150, -150, -140, -140, -140, -90, -90, -90, -90, -90, -90, -90, -90],
   'r': [-500, -500, -500, -505, -505, -500, -500, -500, -495, -500, -500, -500, -500, -500, -500, -495, -495, -500, -500, -500, -500, -500, -500, -495, -495, -500, -500, -500, -500, -500, -500, -495, -495, -500, -500, -500, -500, -500, -500, -495, -495, -500, -500, -500, -500, -500, -500, -495, -505, -510, -510, -510, -510, -510, -510, -505, -500, -500, -500, -500, -500, -500, -500, -500],
   'n': [-280, -290, -300, -300, -300, -300, -290, -280, -290, -310, -330, -335, -335, -330, -310, -290, -300, -335, -340, -345, -345, -340, -335, -300, -300, -330, -345, -350, -350, -345, -330, -300, -300, -335, -345, -350, -350, -345, -335, -300, -300, -330, -340, -345, -345, -340, -330, -300, -290, -310, -330, -330, -330, -330, -310, -290, -280, -290, -300, -300, -300, -300, -290, -280],
   'b': [-310, -320, -320, -320, -320, -320, -320, -310, -320, -335, -330, -330, -330, -330, -335, -320, -320, -340, -340, -340, -340, -340, -340, -320, -320, -330, -340, -340, -340, -340, -330, -320, -320, -335, -335, -340, -340, -335, -335, -320, -320, -330, -335, -340, -340, -335, -330, -320, -320, -330, -330, -330, -330, -330, -330, -320, -310, -320, -320, -320, -320, -320, -320, -310],
@@ -16,13 +16,54 @@ const piecesValues = {
 
 let old_transpositionTable = {};
 let transpositionTable = {};
+let opening_table = {
+"ornbqkbnrppppppppooooooooooooooooooooooooooooooooPPPPPPPPRNBQKBNRwyyyy":[20,[52,36,null],"Book Move"],
+"28rnbqkbnrppppopppoooooooooooopoooooooPoooooooooooPPPPoPPPRNBQKBNRwyyyy":[30,[62,45,null],"Book Move"],
+"ornbqkbnrppppopppoooooooooooopoooooooPooooooooNooPPPPoPPPRNBQKBoRbyyyy":[30,[1,18,null],"Book Move"],
+"orobqkbnrppppopppoonooooooooopoooooooPooooooooNooPPPPoPPPRNBQKBoRwyyyy":[30,[61,34,null],"Book Move"],
+"36rnbqkbnrppppppppooooooooooooooooooooPoooooooooooPPPPoPPPRNBQKBNRbyyyy":[20,[10,26,null],"Book Move"],
+"26rnbqkbnrppopppppoooooooooopoooooooooPoooooooooooPPPPoPPPRNBQKBNRwyyyy":[30,[57,42,null],"Book Move"],
+"ornbqkbnrppopppppoooooooooopoooooooooPoooooNoooooPPPPoPPPRoBQKBNRbyyyy":[40,[1,18,null],"Book Move"],
+"orobqkbnrppopppppoonooooooopoooooooooPoooooNoooooPPPPoPPPRoBQKBNRwyyyy":[20,[62,45,null],"Book Move"],
+"orobqkbnrppopppppoonooooooopoooooooooPoooooNooNooPPPPoPPPRoBQKBoRbyyyy":[0,[12,20,null],"Book Move"],
+"orobqkbnrppopopppoonopooooopoooooooooPoooooNooNooPPPPoPPPRoBQKBoRwyyyy":[0,[61,52,null],"Book Move"],
+"orobqkbnrppopopppoonopooooopoooooooooPoooooNooNooPPPPBPPPRoBQKooRbyyyy":[0,[18,35,null],"Book Move"],
+"27rnbqkbnrpppoppppooooooooooopooooooooPoooooooooooPPPPoPPPRNBQKBNRwyyyy":[70,[36,27,null],"Book Move"],
+"ornbqkbnrpppoppppoooooooooooPooooooooooooooooooooPPPPoPPPRNBQKBNRbyyyy":[70,[3,27,null],"Book Move"],
+"ornbokbnrpppoppppoooooooooooqooooooooooooooooooooPPPPoPPPRNBQKBNRwyyyy":[70,[57,42,null],"Book Move"],
+"ornbokbnrpppoppppoooooooooooqooooooooooooooNoooooPPPPoPPPRoBQKBNRbyyyy":[70,[27,3,null],"Book Move"],
+"ornbqkbnrpppoppppooooooooooooooooooooooooooNoooooPPPPoPPPRoBQKBNRwyyyy":[70,[62,45,null],"Book Move"],
+"ornbqkbnrpppoppppooooooooooooooooooooooooooNooNooPPPPoPPPRoBQKBoRbyyyy":[70,[6,21,null],"Book Move"],
+"ornbqkborpppoppppooooonooooooooooooooooooooNooNooPPPPoPPPRoBQKBoRwyyyy":[70,[51,35,null],"Book Move"],
+"ornbqkbnrppppppopoooooopoooooooooooooPoooooooooooPPPPoPPPRNBQKBNRwyyyy":[70,[51,35,null],"Book Move"],
+"35rnbqkbnrppppppopoooooopooooooooooooPPoooooooooooPPPooPPPRNBQKBNRbyyyy":[70,[5,14,null],"Book Move"],
+"ornbqkonrppppppbpoooooopooooooooooooPPoooooooooooPPPooPPPRNBQKBNRwyyyy":[70,[57,42,null],"Book Move"],
+"35rnbqkbnrppopppppoooooooooopooooooooPPoooooooooooPPPooPPPRNBQKBNRbyyyy":[10,[26,35,null],"Book Move"],
+"ornbqkbnrppopppppooooooooooooooooooopPoooooooooooPPPooPPPRNBQKBNRwyyyy":[10,[62,45,null],"Book Move"],
+"ornbqkbnrppopppppooooooooooooooooooopPooooooooNooPPPooPPPRNBQKBoRbyyyy":[10,[12,28,null],"Book Move"],
+"28rnbqkbnrppopopppoooooooooooopoooooopPooooooooNooPPPooPPPRNBQKBoRwyyyy":[10,[50,42,null],"Book Move"],
+"ornbqkbnrppopopppoooooooooooopoooooopPoooooPooNooPPoooPPPRNBQKBoRbyyyy":[5,[1,18,null],"Book Move"],
+"orobqkbnrppopopppoonooooooooopoooooopPoooooPooNooPPoooPPPRNBQKBoRwyyyy":[15,[42,35,null],"Book Move"],
+"35rnbqkbnrppppppppoooooooooooooooooooPooooooooooooPPPoPPPPRNBQKBNRbyyyy":[10,[11,27,null],"Book Move"],
+"27rnbqkbnrpppoppppooooooooooopoooooooPooooooooooooPPPoPPPPRNBQKBNRwyyyy":[10,[50,34,null],"Book Move"],
+"34rnbqkbnrpppoppppooooooooooopooooooPPooooooooooooPPooPPPPRNBQKBNRbyyyy":[10,[10,18,null],"Book Move"],
+"ornbqkbnrppooppppoopoooooooopooooooPPooooooooooooPPooPPPPRNBQKBNRwyyyy":[30,[57,42,null],"Book Move"],
+"ornbqkbnrppooppppoopoooooooopooooooPPooooooNoooooPPooPPPPRoBQKBNRbyyyy":[30,[6,21,null],"Book Move"],
+"ornbqkborppooppppoopoonooooopooooooPPooooooNoooooPPooPPPPRoBQKBNRwyyyy":[30,[52,44,null],"Book Move"],
+"ornbqkborppooppppoopoonooooopooooooPPooooooNoPoooPPoooPPPRoBQKBNRbyyyy":[20,[2,29,null],"Book Move"],
+}
 
 let count = 0;
 function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, timeLimit) {
   const startTime = Date.now();
-  let bestValue, bestMove, depth = 1;
+  let bestValue, bestMove, depth = 0;
   old_transpositionTable = {}
   count = 0;
+
+  if (opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] != undefined) {
+    return opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)]
+  }
+
   while (true) {
     const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, timeLimit - (Date.now() - startTime));
     old_transpositionTable = transpositionTable;
@@ -46,8 +87,12 @@ function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, wh
 
 function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit) {
   count += 1
-  if (depth <= 0) {
+  if (depth <= 0 && originalDepth != 0) {
     let score = evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit)[0]
+    return [score, null];
+  }
+  else if (depth <= -2) {
+    let score = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle)
     return [score, null];
   }
   if (previousPositions.includes(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)) && depth != originalDepth) {

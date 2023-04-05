@@ -140,7 +140,17 @@ makeGrid();
 
 function aiMove() {
   let eval = iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, slider.value)
-  evaluationNumberUI.innerHTML = eval[0] / 100;
+  if (eval[0] == 1000000000) {
+    eval[0] = "M" + String(eval[2])
+    evaluationNumberUI.innerHTML = eval[0]
+  }
+  else if (eval[0] == -1000000000) {
+    eval[0] = "-M" + String(eval[2])
+    evaluationNumberUI.innerHTML = eval[0]
+  }
+  else {
+    evaluationNumberUI.innerHTML = eval[0] / 100;
+  }
   moved = [eval[1][0], eval[1][1]] 
   console.log(eval[2])
   let newPositionInfo = movePieceAI(eval[1], board, whitesTurn, enPassent, blackCastle, whiteCastle);
@@ -154,11 +164,11 @@ function aiMove() {
 }
 
 function movePiece(startingPos, endingPos) {
-  enPassent = null;
   if (board[startingPos] == "p" || board[startingPos] == "P") {
     if (startingPos%8 != endingPos%8 && board[endingPos] == null) {
       board[enPassent] = null;
     }
+    enPassent = null;
     if (Math.abs(Math.floor(startingPos/8) - Math.floor(endingPos/8)) == 2) {
       enPassent = endingPos;
     }
@@ -168,9 +178,11 @@ function movePiece(startingPos, endingPos) {
   }
   else if (board[startingPos] == "k") {
     blackCastle = [false, false];
+    enPassent = null;
   }
   else if (board[startingPos] == "K") {
     whiteCastle = [false, false];
+    enPassent = null;
   }
   if (endingPos == 0 || startingPos == 0) {
     blackCastle[0] = false;

@@ -18,11 +18,14 @@
       <div class="chess-board"></div>
       <div class="promotion-options-container"></div>
       <div class="stats">
-        <div class="evaluation"></div>
+        <div class="evaluation">0.3</div>
         <div class="slidecontainer">
           <input type="range" min="1" max="10000" value="5000" class="slider" id="time-slider">
         </div>
         <button onclick="aiMove()">AI Move</button>
+        <input type="number" value="" placeholder="value of pos in cp" id="cp-book-move-value">
+        <button onclick="addBookValue()" id="add-book-move-value">Add Book Value</button>
+        <button onclick="copyNewBook()" id="copy-book-moves">Copy New Book</button>
       </div>
     </div>
   </div>
