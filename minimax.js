@@ -52,12 +52,54 @@ let opening_table = {
 "ornbqkborppooppppoopoonooooopooooooPPooooooNoooooPPooPPPPRoBQKBNRwyyyy":[30,[52,44,null],"Book Move"],
 "ornbqkborppooppppoopoonooooopooooooPPooooooNoPoooPPoooPPPRoBQKBNRbyyyy":[20,[2,29,null],"Book Move"],
 "26rnbqkbnrppopppppoooooooooopoooooooooPoooooNoooooPPPPoPPPRoBQKBNRbyyyy":[40,[1,18,null],"Book Move"],
+"27rnbqkbnrpppoppppooooooooooopoooooooPoBooooooooooPPPoPPPPRNoQKBNRbyyyy":[8,[10,26,null],"Book Move"],
+"26rnbqkbnrppooppppooooooooooppoooooooPoBooooooooooPPPoPPPPRNoQKBNRwyyyy":[8,[52,44,null],"Book Move"],
+"ornbqkbnrppooppppooooooooooppoooooooPoBooooooPoooPPPooPPPRNoQKBNRbyyyy":[8,[1,18,null],"Book Move"],
+"orobqkbnrppooppppoonoooooooppoooooooPoBooooooPoooPPPooPPPRNoQKBNRwyyyy":[0,[62,45,null],"Book Move"],
+"orobqkbnrppooppppoonoooooooppoooooooPoBooooooPNooPPPooPPPRNoQKBoRbyyyy":[0,[6,21,null],"Book Move"],
+"orobqkborppooppppoonoonooooppoooooooPoBooooooPNooPPPooPPPRNoQKBoRwyyyy":[0,[35,26,null],"Book Move"],
+"orobqkborppooppppoonoonooooPpoooooooooBooooooPNooPPPooPPPRNoQKBoRbyyyy":[0,[12,20,null],"Book Move"],
+"ornbqkbnrppopppppoopoooooooooooooooooPoooooooooooPPPPoPPPRNBQKBNRwyyyy":[45,[51,35,null],"Book Move"],
+"35rnbqkbnrppopppppoopooooooooooooooooPPoooooooooooPPPooPPPRNBQKBNRbyyyy":[30,[11,27,null],"Book Move"],
+"27rnbqkbnrppooppppoopoooooooopoooooooPPoooooooooooPPPooPPPRNBQKBNRwyyyy":[0,[53,45,null],"Book Move"],
+"ornbqkbnrppooppppoopooooooooooooooooPpooooooooPooPPPoooPPRNBQKBNRwyyyy":[40,[45,36,null],"Book Move"],
+"ornbqkbnrppooppppoopooooooooooooooooPPoooooooooooPPPoooPPRNBQKBNRbyyyy":[30,[12,28,null],"Book Move"],
+"28rnbqkbnrppooopppoopooooooooopooooooPPoooooooooooPPPoooPPRNBQKBNRwyyyy":[30,[62,45,null],"Book Move"],
+"ornbqkbnrppooopppoopooooooooopooooooPPooooooooNooPPPoooPPRNBQKBoRbyyyy":[10,[2,38,null],"Book Move"],
+"ornoqkbnrppooopppoopooooooooopooooooPPobooooooNooPPPoooPPRNBQKBoRwyyyy":[20,[50,42,null],"Book Move"],
+"ornoqkbnrppooopppoopooooooooopooooooPPoboooPooNooPPooooPPRNBQKBoRbyyyy":[20,[6,21,null],"Book Move"],
+"ornbqkbnrppppopppoooopoooooooooooooooPoooooooooooPPPPoPPPRNBQKBNRwyyyy":[10,[51,35,null],"Book Move"],
+"35rnbqkbnrppppopppoooopooooooooooooooPPoooooooooooPPPooPPPRNBQKBNRbyyyy":[10,[11,27,null],"Book Move"],
+"27rnbqkbnrpppoopppoooopoooooopoooooooPPoooooooooooPPPooPPPRNBQKBNRwyyyy":[30,[36,28,null],"Book Move"],
+"ornbqkbnrpppoopppoooopoooooopPooooooPooooooooooooPPPooPPPRNBQKBNRbyyyy":[30,[10,26,null],"Book Move"],
+"26rnbqkbnrppooopppoooopoooooppPooooooPooooooooooooPPPooPPPRNBQKBNRwyyyy":[30,[50,42,null],"Book Move"],
+"ornbqkbnrppooopppoooopoooooppPooooooPooooooPoooooPPoooPPPRNBQKBNRbyyyy":[30,[1,18,null],"Book Move"],
+"orobqkbnrppooopppoonopoooooppPooooooPooooooPoooooPPoooPPPRNBQKBNRwyyyy":[30,[62,45,null],"Book Move"],
+"orobqkbnrppooopppoonopoooooppPooooooPooooooPooNooPPoooPPPRNBQKBoRbyyyy":[30,[3,17,null],"Book Move"],
+"orobokbnrppooopppoqnopoooooppPooooooPooooooPooNooPPoooPPPRNBQKBoRwyyyy":[30,[61,43,null],"Book Move"],
+"35rnbqkborppppppppooooonoooooooooooooPooooooooooooPPPoPPPPRNBQKBNRwyyyy":[30,[50,34,null],"Book Move"],
+"34rnbqkborppppppppooooonooooooooooooPPooooooooooooPPooPPPPRNBQKBNRbyyyy":[30,[12,20,null],"Book Move"],
+"ornbqkborppppopppoooopnooooooooooooPPooooooooooooPPooPPPPRNBQKBNRwyyyy":[30,[62,45,null],"Book Move"],
+"34rnbqkbnrppppppppooooooooooooooooooPoooooooooooooPPoPPPPPRNBQKBNRbyyyy":[10,[12,28,null],"Book Move"],
+"28rnbqkbnrppppopppoooooooooooopoooooPoooooooooooooPPoPPPPPRNBQKBNRwyyyy":[20,[57,42,null],"Book Move"],
+"ornbqkbnrppppopppoooooooooooopoooooPoooooooNoooooPPoPPPPPRoBQKBNRbyyyy":[20,[6,21,null],"Book Move"],
+"28rnbqkbnrppppopppoooooooooooopooQooooPoooooooooooPPPPoPPPRNBoKBNRbyyyy":[-30,[1,18,null],"Book Move"],
+"28rnbqkbnrppppopppoooooooooooopoooooooPooooooooNooPPPPoPPPRNBQKBoRbyyyy":[30,[1,18,null],"Book Move"],
+"ornbqkbnrpppoopppooopoooooooopoooooooPooooooooNooPPPPoPPPRNBQKBoRwyyyy":[60,[51,35,null],"Book Move"],
+"35rnbqkbnrpppoopppooopoooooooopooooooPPooooooooNooPPPooPPPRNBQKBoRbyyyy":[80,[28,35,null],"Book Move"],
+"ornbqkbnrpppoopppooopooooooooooooooopPooooooooNooPPPooPPPRNBQKBoRwyyyy":[60,[45,35,null],"Book Move"],
+"ornbqkbnrpppoopppooopoooooooooooooooNPoooooooooooPPPooPPPRNBQKBoRbyyyy":[60,[6,21,null],"Book Move"],
+"28robqkbnrppppopppoonooooooBoopoooooooPooooooooNooPPPPoPPPRNBQKooRbyyyy":[20,[6,21,null],"Book Move"],
+"26rnbqkbnrppopppppoooooooooopoooooooBoPoooooooooooPPPPoPPPRNBQKoNRbyyyy":[0,[1,18,null],"Book Move"],
+"orobqkbnrppopppppoonooooooopoooooooBoPooooooooQooPPPPoPPPRNBoKoNRbyyyy":[-80,[6,21,null],"Book Move"],
+"orobqkborppopppppoonoonoooopoooooooBoPooooooooQooPPPPoPPPRNBoKoNRwyyyy":[-80,[51,43,null],"Book Move"],
+"orobqkborppopppppoonoonoooopoooooooBoPooooooPoQooPPPooPPPRNBoKoNRbyyyy":[-80,[12,20,null],"Book Move"],
 }
 
 let count = 0;
 function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, timeLimit) {
   const startTime = Date.now();
-  let bestValue, bestMove, depth = 0;
+  let bestValue, bestMove, depth = 1;
   old_transpositionTable = {}
   count = 0;
 
@@ -66,7 +108,7 @@ function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, wh
   }
 
   while (true) {
-    const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, timeLimit - (Date.now() - startTime));
+    const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, timeLimit - (Date.now() - startTime), []);
     old_transpositionTable = transpositionTable;
     transpositionTable = {};
     if (value !== null) {
@@ -86,24 +128,33 @@ function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, wh
   return [bestValue, bestMove, depth - 1];
 }
 
-function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit) {
+function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit, previousPositionsMinimax) {
   count += 1
+  const hashOfPos = hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle);
+  if (hashOfPos in transpositionTable) {
+    return [transpositionTable[hashOfPos], null];
+  }
   if (depth <= 0 && originalDepth != 0) {
     let score = evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit)[0]
+    transpositionTable[hashOfPos] = score
     return [score, null];
   }
   else if (depth <= -2) {
     let score = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle)
     return [score, null];
   }
-  if (previousPositions.includes(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)) && depth != originalDepth) {
+  if ((previousPositions.includes(hashOfPos) || previousPositionsMinimax.includes(hashOfPos)) && depth != originalDepth) {
     return [0, null]
   }
+  previousPositionsMinimax.push(hashOfPos);
   let startTime = Date.now();
   if (whitesTurn) {
     let max = -Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
+      // if (hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable && hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable){
+      //   return old_transpositionTable[hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))] - old_transpositionTable[hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))]
+      // }
       return evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) - evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
     });
     if (allValidMoves.length == 0) {
@@ -114,7 +165,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     }
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime))[0];
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime), previousPositionsMinimax)[0];
       if (Date.now() - startTime >= timeLimit || score == null) {
         // Time's up
         return [null, null];
@@ -130,12 +181,16 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
         break;
       }
     }
+    transpositionTable[hashOfPos] = max;
     return [max, bestMove];
   }
   else {
     let min = Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
+      // if (hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable && hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable){
+      //   return old_transpositionTable[hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))] - old_transpositionTable[hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))]
+      // }
       return evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) - evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
     });
     if (allValidMoves.length == 0){
@@ -146,7 +201,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     }
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime))[0];
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime), previousPositionsMinimax)[0];
       if (Date.now() - startTime >= timeLimit || score == null) {
         // Time's up
         return [null, null];
@@ -162,12 +217,17 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
         break;
       }
     }
+    transpositionTable[hashOfPos] = min;
     return [min, bestMove];
   }
 }
 
 function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit) {
   count += 1
+  const hashOfPos = hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle);
+  if (hashOfPos in transpositionTable) {
+    return [transpositionTable[hashOfPos], null];
+  }
   let startTime = Date.now();
   if (whitesTurn) {
     let max = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle);
@@ -193,6 +253,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
         break;
       }
     }
+    transpositionTable[hashOfPos] = max;
     return [max, bestMove];
   }
   else {
@@ -219,6 +280,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
         break;
       }
     }
+    transpositionTable[hashOfPos] = min;
     return [min, bestMove];
   }
 }
@@ -252,9 +314,11 @@ function evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle
   else {
     if (whiteEndGame > blackEndGame) {
       totalWhite += 80
-      totalWhite -= 10 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
+      totalWhite -= 15 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
     }
-    totalWhite -= Math.round(piecesValues["kend"][whiteKingPos] * 10 * (1 - (whiteEndGame / 2000)))
+    if (totalBlack < -100) {
+      totalWhite -= Math.round(piecesValues["kend"][whiteKingPos] * 10 * (1 - (whiteEndGame / 2000)))
+    }
   }
   if (blackEndGame < 0) {
     totalBlack += piecesValues["k"][blackKingPos]
@@ -262,9 +326,11 @@ function evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle
   else {
     if (blackEndGame > whiteEndGame) {
       totalBlack -= 80
-      totalBlack += 10 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
+      totalBlack += 15 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
     }
-    totalBlack += Math.round(piecesValues["kend"][blackKingPos] * 10 * (1 - (blackEndGame / 2000)))
+    if (totalWhite > 100) {
+      totalBlack += Math.round(piecesValues["kend"][blackKingPos] * 10 * (1 - (blackEndGame / 2000)))
+    }
   }
   return Math.round((((totalWhite + totalBlack) * 178000) / (totalWhite - totalBlack + 100000)));
 }
