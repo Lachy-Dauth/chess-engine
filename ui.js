@@ -11,9 +11,14 @@ let worker = new Worker('./workerEvaluation.js');
 
 let tempBook = {};
 
-const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-// const fen = '8/8/N3Ppk1/PB1p4/3K1Q2/8/8/6n1';
-let board = fenToBoard(fen);
+let fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+let game = fenToBoard(fen);
+let board = game[0];
+let whitesTurn = game[1];
+let enPassent = game[2];
+let whiteCastle = game[3];
+let blackCastle = game[4];
+
 const pieces = {
   'P': '\u2659',
   'R': '\u2656',
@@ -31,12 +36,6 @@ const pieces = {
 let selected = null;
 let validMoves = [];
 let validMovesInfo = [];
-let whitesTurn = true;
-let enPassent = null;
-let whiteCastle = [true, true];
-let blackCastle = [true, true];
-// let whiteCastle = [false, false];
-// let blackCastle = [false, false];
 let promotion = null;
 let promotionOptions = ["q", "n", "b", "r"]
 let moved = [];
@@ -327,7 +326,7 @@ function movePiece(startingPos, endingPos) {
 
 function fenToBoard(fen) {
   let board = [];
-  let ranks = fen.split('/');
+  let ranks = fen.split(" ")[0].split('/');
 
   // Loop through each rank in the fen string
   for (let i = 0; i < ranks.length; i++) {
@@ -353,7 +352,46 @@ function fenToBoard(fen) {
     board = [...board, ...row];
   }
 
-  return board;
+
+  const castlingFen = fen.split(" ")[2];
+  let whiteCastle = [false, false];
+  let blackCastle = [false, false];
+
+  if (castlingFen.includes("K")) {
+    whiteCastle[1] = true;
+  }
+  if (castlingFen.includes("Q")) {
+    whiteCastle[0] = true;
+  }
+  if (castlingFen.includes("k")) {
+    blackCastle[1] = true;
+  }
+  if (castlingFen.includes("q")) {
+    blackCastle[0] = true;
+  }
+
+  return [board, 
+    fen.split(" ")[1] == "w", 
+    fen.split(" ")[3] == "-" ? null : (fen.split(" ")[3].split("")[0].charCodeAt(0) - 97) * 8 + fen.split(" ")[3].split("")[1], 
+    whiteCastle, 
+    blackCastle
+  ]
+}
+
+document.getElementById("menuButton").addEventListener("click", function() {
+  document.getElementById("hiddenMenu").classList.toggle("active");
+});
+
+function updateFen() {
+  fen = document.getElementById("fen-holder").value;
+  game = fenToBoard(fen);
+  board = game[0];
+  whitesTurn = game[1];
+  enPassent = game[2];
+  whiteCastle = game[3];
+  blackCastle = game[4];
+  aiEval = false;
+  makeGrid();
 }
 
 function isCapitalLetter(char) {
