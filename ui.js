@@ -11,8 +11,8 @@ let worker = new Worker('./workerEvaluation.js');
 
 let tempBook = {};
 
-const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-// const fen = '8/8/N3Ppk1/PB1p4/3K1Q2/8/8/6n1';
+// const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+const fen = '1k5r/1P2q3/1Q6/7p/6p1/6Pp/7P/2R4K';
 let board = fenToBoard(fen);
 const pieces = {
   'P': '\u2659',
@@ -33,10 +33,10 @@ let validMoves = [];
 let validMovesInfo = [];
 let whitesTurn = true;
 let enPassent = null;
-let whiteCastle = [true, true];
-let blackCastle = [true, true];
-// let whiteCastle = [false, false];
-// let blackCastle = [false, false];
+// let whiteCastle = [true, true];
+// let blackCastle = [true, true];
+let whiteCastle = [false, false];
+let blackCastle = [false, false];
 let promotion = null;
 let promotionOptions = ["q", "n", "b", "r"]
 let moved = [];
@@ -46,6 +46,7 @@ let moveForBook = [];
 let previousPositions = [hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)]
 
 let aiEval = [20, [52, 36, null], "book"];
+aiEval = false;
 
 console.log(board);
 

@@ -313,25 +313,13 @@ function evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle
     totalWhite += piecesValues["K"][whiteKingPos]
   }
   else {
-    if (whiteEndGame > blackEndGame) {
-      totalWhite += 80
-      totalWhite -= 15 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
-    }
-    if (totalBlack < -100) {
-      totalWhite -= Math.round(piecesValues["kend"][whiteKingPos] * 10 * (1 - (whiteEndGame / 2000)))
-    }
+    totalWhite -= Math.round(piecesValues["kend"][whiteKingPos] * (1 - (whiteEndGame / 2000)))
   }
   if (blackEndGame < 0) {
     totalBlack += piecesValues["k"][blackKingPos]
   }
   else {
-    if (blackEndGame > whiteEndGame) {
-      totalBlack -= 80
-      totalBlack += 15 * Math.round(Math.max(Math.abs(whiteKingPos%8 - blackKingPos%8), Math.abs(Math.round(whiteKingPos/8) - Math.round(blackKingPos/8))))
-    }
-    if (totalWhite > 100) {
-      totalBlack += Math.round(piecesValues["kend"][blackKingPos] * 10 * (1 - (blackEndGame / 2000)))
-    }
+    totalBlack += Math.round(piecesValues["kend"][blackKingPos] * (1 - (blackEndGame / 2000)))
   }
   return Math.round((((totalWhite + totalBlack) * 178000) / (totalWhite - totalBlack + 100000)));
 }
