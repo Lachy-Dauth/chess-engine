@@ -99,7 +99,7 @@ let opening_table = {
 let count = 0;
 function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, timeLimit) {
   const startTime = Date.now();
-  let bestValue, bestMove, depth = 1;
+  let bestValue, bestMove, depth = 0;
   old_transpositionTable = {}
   count = 0;
 
@@ -109,7 +109,6 @@ function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, wh
 
   while (true) {
     const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, timeLimit - (Date.now() - startTime), []);
-    old_transpositionTable = transpositionTable;
     transpositionTable = {};
     if (value !== null) {
       bestValue = value;
@@ -152,10 +151,9 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     let max = -Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      // if (hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable && hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable){
-      //   return old_transpositionTable[hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))] - old_transpositionTable[hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))]
-      // }
-      return evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) - evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreTwo = hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable ? old_transpositionTable[hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))] : evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreOne = hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable ? old_transpositionTable[hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))] : evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      return scoreTwo - scoreOne
     });
     if (allValidMoves.length == 0) {
       if (kingInCheck(board, whitesTurn)) {
@@ -182,16 +180,16 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
       }
     }
     transpositionTable[hashOfPos] = max;
+    old_transpositionTable[hashOfPos] = max;
     return [max, bestMove];
   }
   else {
     let min = Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      // if (hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable && hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable){
-      //   return old_transpositionTable[hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))] - old_transpositionTable[hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))]
-      // }
-      return evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) - evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreTwo = hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable ? old_transpositionTable[hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))] : evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreOne = hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)) in old_transpositionTable ? old_transpositionTable[hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))] : evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      return scoreOne - scoreTwo
     });
     if (allValidMoves.length == 0){
       if (kingInCheck(board, whitesTurn)) {
@@ -217,6 +215,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
         break;
       }
     }
+    old_transpositionTable[hashOfPos] = min;
     transpositionTable[hashOfPos] = min;
     return [min, bestMove];
   }
@@ -254,6 +253,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
       }
     }
     transpositionTable[hashOfPos] = max;
+    old_transpositionTable[hashOfPos] = max;
     return [max, bestMove];
   }
   else {
@@ -281,6 +281,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
       }
     }
     transpositionTable[hashOfPos] = min;
+    old_transpositionTable[hashOfPos] = min;
     return [min, bestMove];
   }
 }

@@ -1,22 +1,26 @@
+html {
+  font-size: calc(0.1 * min(630px, 95vw));
+}
+
 .chess-board {
   aspect-ratio: 1/1;
   display: grid;
-  width: 720px;
+  width: 10rem;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  border: 10px outset sienna;
+  border: 0.1rem outset sienna;
   background-color: rgb(47, 47, 47);
+  dis
 }
 
 .promotion-options-container {
   display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  width: 90px;
-  height: 360px;
+  grid-template-columns: repeat(4, 1fr);
+  width: 5rem;
+  aspect-ratio: 4/1å;
 }
 
 .chess-board-container {
-  display: flex;
 }
 
 .square {
@@ -25,7 +29,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 70px;
+  font-size: 1rem;
   width: 100%;
   height: 100%;
   user-select: none;
@@ -34,7 +38,6 @@
 }
 
 .selected {
-  font-size: 80px;
   text-shadow: 0 0 5px #fff,
   0 0 10px #fff,
   0 0 15px #fff,
@@ -42,16 +45,19 @@
   0 0 30px #00b3b3,
   0 0 40px #008080,
   0 0 50px #004d4d;
-  border: 10px outset rgba(54, 54, 54, 0.568);
 }
 
 .valid {
-  border: 10px solid rgba(54, 54, 54, 0.568);
-  border-radius: 20px;
+  border: 0.15rem solid rgba(54, 54, 54, 0.568);
+  border-radius: 0.3rem;
 }
 
 .moved {
-  border: 10px solid rgba(171, 151, 0, 0.494);
+  border: 0.15rem solid rgba(171, 151, 0, 0.494);
+}
+
+.aiMove {
+  border: 0.15rem solid rgb(65, 62, 255);
 }
 
 .light {
@@ -65,19 +71,28 @@
 .unactive {
   background-color: grey;
 }
-.evaluation {
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: 900;
-  font-size: 50px;
-  padding: 10px;
-}
 
 .stats {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 5rem;
+  height: 80px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  font-size: 0.3rem;
+  padding: 5px;
 }
 
 input, button {
-  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  font-size: 0.3rem;
+  padding: 5px;
+}
+
+.side-bar {
+  display: flex;
+  justify-content: space-evenly;
+  width: 10rem;
+  height: 80px;
 }

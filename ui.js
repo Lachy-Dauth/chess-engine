@@ -1,15 +1,18 @@
 const chessBoard = document.querySelector(".chess-board");
 const promotionOptionsUI = document.querySelector(".promotion-options-container");
 const evaluationNumberUI = document.querySelector(".evaluation");
-const slider = document.getElementById("time-slider");
-const cpValueIn = document.getElementById("cp-book-move-value");
-const bookMoveAddBtn = document.getElementById("add-book-move-value");
-const copyBook = document.getElementById("copy-book-moves");
+const moveUI = document.querySelector(".move");
+const dephtUI = document.querySelector(".depth");
+const moveNowBtn = document.getElementById("move-now");
+let worker = new Worker('./workerEvaluation.js');
+// const cpValueIn = document.getElementById("cp-book-move-value");
+// const bookMoveAddBtn = document.getElementById("add-book-move-value");
+// const copyBook = document.getElementById("copy-book-moves");
 
 let tempBook = {};
 
 const fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-// const fen = '5R2/4R3/8/8/8/3k4/8/7K';
+// const fen = '8/8/N3Ppk1/PB1p4/3K1Q2/8/8/6n1';
 let board = fenToBoard(fen);
 const pieces = {
   'P': '\u2659',
@@ -42,6 +45,8 @@ let moveForBook = [];
 
 let previousPositions = [hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)]
 
+let aiEval = [20, [52, 36, null], "book"];
+
 console.log(board);
 
 function makeGrid() {
@@ -69,6 +74,9 @@ function makeGrid() {
 
     if (selected == i) {
       square.classList.add("selected");
+    }
+    if (aiEval !== false && aiEval[1] != null && aiEval[1].includes(i)) {
+      square.classList.add("aiMove");
     }
     else if (validMoves.includes(i)) {
       square.classList.add("valid");
@@ -143,6 +151,7 @@ function makeGrid() {
         whitesTurn = !whitesTurn;
         promotion = null;
         validMoves = []
+        aiEval = false
         previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
         makeGrid();
       })
@@ -150,44 +159,103 @@ function makeGrid() {
 
     promotionOptionsUI.appendChild(square);
   }
-  bookMoveAddBtn.disabled = opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] != undefined
+  moveNowBtn.disabled = aiEval === false;
+  if (aiEval == false) {
+    worker.terminate()
+    worker = new Worker('./workerEvaluation.js');
+    
+    worker.addEventListener('message', (message) => {
+      if (message.data[0] == "check-in") {
+        console.log("check-in")
+      }
+      else if (message.data[0] == "final") {
+        aiEval = message.data[1];
+        moveNow();
+      }
+      else if (message.data[0] == "early") {
+        aiEval = message.data[1];
+        makeGrid();
+      }
+    });
+
+    worker.postMessage({
+      command: 'evaluate-early',
+      board: board,
+      whitesTurn: whitesTurn,
+      enPassent: enPassent,
+      blackCastle: blackCastle,
+      whiteCastle: whiteCastle,
+      timeLimit: Infinity,
+      previousPositions: previousPositions,
+    });
+  }
+  else {
+    evaluationNumberUI.innerHTML = "Eval: "
+    if (aiEval[0] == 1000000000) {
+      aiEval[0] = "M" + String((aiEval[2]) / 2)
+      evaluationNumberUI.innerHTML += aiEval[0]
+    }
+    else if (aiEval[0] == -1000000000) {
+      aiEval[0] = "-M" + String((aiEval[2]) / 2)
+      evaluationNumberUI.innerHTML += aiEval[0]
+    }
+    else {
+      evaluationNumberUI.innerHTML += aiEval[0] / 100;
+    }
+    moveUI.innerHTML = "Move: " + String.fromCharCode(97 + aiEval[1][0]%8) + String(8 - Math.floor(aiEval[1][0]/8)) + String.fromCharCode(97 + aiEval[1][1]%8) + String(8 - Math.floor(aiEval[1][1]/8))
+    dephtUI.innerHTML = "Depth: " + aiEval[2];
+  }
+  // bookMoveAddBtn.disabled = opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] != undefined
 }
 makeGrid();
 
-function aiMove() {
-  let eval = iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, whiteCastle, slider.value)
-  if (eval[0] == 1000000000) {
-    eval[0] = "M" + String(eval[2])
-    evaluationNumberUI.innerHTML = eval[0]
+function moveNow() {
+  worker.terminate()
+  worker = new Worker('./workerEvaluation.js');
+  
+  worker.addEventListener('message', (message) => {
+    if (message.data[0] == "check-in") {
+      console.log("check-in")
+    }
+    else if (message.data[0] == "final") {
+      aiEval = message.data[1];
+      moveNow();
+    }
+    else if (message.data[0] == "early") {
+      aiEval = message.data[1];
+      makeGrid();
+    }
+  });
+  if (aiEval !== false) {
+    let eval = aiEval;
+    moved = [eval[1][0], eval[1][1]] 
+    console.log(eval[2])
+    let newPositionInfo = movePieceAI(eval[1], board, whitesTurn, enPassent, blackCastle, whiteCastle);
+    board = newPositionInfo[0];
+    whitesTurn = newPositionInfo[1];
+    enPassent = newPositionInfo[2];
+    blackCastle = newPositionInfo[3];
+    whiteCastle = newPositionInfo[4];
+    previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
+    aiEval = false;
+    console.log(aiEval)
+    makeGrid();
   }
-  else if (eval[0] == -1000000000) {
-    eval[0] = "-M" + String(eval[2])
-    evaluationNumberUI.innerHTML = eval[0]
-  }
-  else {
-    evaluationNumberUI.innerHTML = eval[0] / 100;
-  }
-  moved = [eval[1][0], eval[1][1]] 
-  console.log(eval[2])
-  let newPositionInfo = movePieceAI(eval[1], board, whitesTurn, enPassent, blackCastle, whiteCastle);
-  board = newPositionInfo[0];
-  whitesTurn = newPositionInfo[1];
-  enPassent = newPositionInfo[2];
-  blackCastle = newPositionInfo[3];
-  whiteCastle = newPositionInfo[4];
-  previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
-  makeGrid();
 }
 
-function addBookValue() {
-  tempBook[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] = [Number(cpValueIn.value), moveForBook, "Book Move"]
-  opening_table[hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)] = [Number(cpValueIn.value), moveForBook, "Book Move"]
-  aiMove()
-}
-
-function copyNewBook() {
-  navigator.clipboard.writeText(JSON.stringify(tempBook).replaceAll('"Book Move"],', '"Book Move"],\n').replace("{", "").replace("}", ""))
-}
+worker.addEventListener('message', (message) => {
+  if (message.data[0] == "check-in") {
+    console.log("check-in")
+  }
+  else if (message.data[0] == "final") {
+    aiEval = message.data[1];
+    moveNow();
+  }
+  else if (message.data[0] == "early") {
+    aiEval = message.data[1];
+    makeGrid();
+  }
+});
 
 function movePiece(startingPos, endingPos) {
   if (board[startingPos] == "p" || board[startingPos] == "P") {
@@ -252,6 +320,7 @@ function movePiece(startingPos, endingPos) {
   }
   if (promotion == null) {
     whitesTurn = !whitesTurn;
+    aiEval = false;
     previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
   }
 }
