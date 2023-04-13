@@ -155,7 +155,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     return [transpositionTable[hashOfPos], null];
   }
   if (depth <= 0 && originalDepth != 0) {
-    let score = evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit)[0]
+    let score = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle)
     transpositionTable[hashOfPos] = score
     return [score, null];
   }
