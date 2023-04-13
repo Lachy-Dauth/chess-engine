@@ -10,14 +10,13 @@ html {
   grid-template-rows: repeat(8, 1fr);
   border: 0.1rem outset sienna;
   background-color: rgb(47, 47, 47);
-  dis
 }
 
 .promotion-options-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   width: 5rem;
-  aspect-ratio: 4/1å;
+  aspect-ratio: 4/1;
 }
 
 .chess-board-container {
