@@ -43,6 +43,7 @@ let moved = [];
 let moveForBook = [];
 
 let previousPositions = [hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle)]
+let previousFens = [boardToFen([board, whitesTurn, enPassent, blackCastle, whiteCastle])]
 
 let aiEval = false;
 
@@ -152,6 +153,7 @@ function makeGrid() {
         validMoves = []
         aiEval = false
         previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
+        previousFens.push(boardToFen([board, whitesTurn, enPassent, blackCastle, whiteCastle]))
         makeGrid();
       })
     }
@@ -236,6 +238,7 @@ function moveNow() {
     blackCastle = newPositionInfo[3];
     whiteCastle = newPositionInfo[4];
     previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
+    previousFens.push(boardToFen([board, whitesTurn, enPassent, blackCastle, whiteCastle]))
     aiEval = false;
     console.log(aiEval)
     makeGrid();
@@ -321,6 +324,7 @@ function movePiece(startingPos, endingPos) {
     whitesTurn = !whitesTurn;
     aiEval = false;
     previousPositions.push(hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle))
+    previousFens.push(boardToFen([board, whitesTurn, enPassent, blackCastle, whiteCastle]))
   }
 }
 
@@ -378,9 +382,64 @@ function fenToBoard(fen) {
   ]
 }
 
-document.getElementById("menuButton").addEventListener("click", function() {
+function boardToFen(boardState) {
+  let fen = "";
+  const board = boardState[0];
+  const isWhiteToMove = boardState[1];
+  const enPassantSquare = boardState[2];
+  const whiteCastle = boardState[3];
+  const blackCastle = boardState[4];
+
+  // Convert the board array back to fen ranks
+  for (let i = 0; i < board.length; i += 8) {
+    const rank = board.slice(i, i + 8).map(square => square === null ? '1' : square).join("");
+    let fenRank = "";
+    let emptySquares = 0;
+    for (let j = 0; j < rank.length; j++) {
+      if (rank[j] === '1') {
+        emptySquares++;
+      } else {
+        if (emptySquares > 0) {
+          fenRank += emptySquares.toString();
+          emptySquares = 0;
+        }
+        fenRank += rank[j];
+      }
+    }
+    if (emptySquares > 0) {
+      fenRank += emptySquares.toString();
+    }
+    fen += fenRank + "/";
+  }
+  fen = fen.slice(0, -1); // Remove the trailing '/' at the end of the fen
+
+  // Add other properties to the fen
+  fen += " " + (isWhiteToMove ? "w" : "b");
+  fen += " " + (whiteCastle[0] ? "Q" : "") + (whiteCastle[1] ? "K" : "") + (blackCastle[0] ? "q" : "") + (blackCastle[1] ? "k" : "");
+  fen += " " + (enPassantSquare === null ? "-" : String.fromCharCode(enPassantSquare % 8 + 97) + (Math.floor(enPassantSquare / 8) + 1).toString());
+
+  return fen;
+}
+
+function undoMove() {
+  if (previousFens.length > 1) {
+    previousFens.pop();
+    previousPositions.pop()
+    fen = previousFens[previousFens.length - 1]
+    game = fenToBoard(fen);
+    board = game[0];
+    whitesTurn = game[1];
+    enPassent = game[2];
+    whiteCastle = game[3];
+    blackCastle = game[4];
+    aiEval = false;
+    makeGrid();
+  }
+}
+
+function toggleMenu() {
   document.getElementById("hiddenMenu").classList.toggle("active");
-});
+}
 
 function updateFen() {
   fen = document.getElementById("fen-holder").value;
@@ -392,6 +451,7 @@ function updateFen() {
   blackCastle = game[4];
   aiEval = false;
   makeGrid();
+  toggleMenu();
 }
 
 function isCapitalLetter(char) {

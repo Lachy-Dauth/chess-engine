@@ -33,7 +33,8 @@
           <div class="move">Move:</div>
           <div class="depth">Depth:</div>
           <button class="btn btn-primary" onclick="moveNow()" id="move-now">AI move</button>
-          <button class="btn btn-primary" id="menuButton">FEN Menu</button>
+          <button class="btn btn-primary" id="menuButton" onclick="toggleMenu()">FEN Menu</button>
+          <button class="btn btn-primary" onclick="undoMove()">Undo Move</button>
           <!-- <input type="number" value="" placeholder="value of pos in cp" id="cp-book-move-value">
           <button onclick="addBookValue()" id="add-book-move-value">Add Book Value</button>
           <button onclick="copyNewBook()" id="copy-book-moves">Copy New Book</button> -->
@@ -42,6 +43,7 @@
     </div>
   </div>
   <ul id="hiddenMenu">
+    <li><div class="close-btn-holder"><button class="btn-close" onclick="toggleMenu()"></button></div></li>
     <li><input type="text" value="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" id="fen-holder"></li>
     <li><button class="btn btn-primary" id="menuButton" onclick="updateFen()">import FEN</button></li>
   </ul>

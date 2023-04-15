@@ -1,5 +1,5 @@
 html {
-  font-size: calc(0.02 * min(720px, 95vw));
+  font-size: calc(0.02 * min(85vh, 95vw));
 }
 
 .chess-board {
@@ -74,9 +74,9 @@ html {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   width: 50rem;
-  height: 80px;
+  height: 5rem;
   gap: 5px;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 900;
@@ -101,21 +101,22 @@ input {
   display: flex;
   justify-content: space-evenly;
   width: 50rem;
-  height: 80px;
+  height: 5rem;
 }
 
 #hiddenMenu {
+  padding: 20px;
+  box-shadow: 0 0 10px grey;
   background-color: #fff;
   border-radius: 4px;
   display: none;
   list-style-type: none;
   margin-top: 10px;
-  padding: 20px;
   text-align: center;
 }
 
 #hiddenMenu > * {
-  padding: 10px;
+  padding: 5px;
 }
 
 #hiddenMenu.active {
@@ -127,4 +128,10 @@ input {
   top: 50%; /* vertically center the menu */
   left: 50%; /* horizontally center the menu */
   transform: translate(-50%, -50%); /* adjust for centering */
+}
+
+.close-btn-holder {
+  position:absolute;
+  right:5px;
+  top:5px;
 }
