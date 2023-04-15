@@ -291,17 +291,21 @@ function findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whi
       if (colourSel) {
         if (whiteCastle[0] && board[57] == null && board[58] == null && board[59] == null && !isKingInCheck && checkIfKingValid([selected, selected - 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
           array.push([56, null])
+          array.push([58, null])
         }
         if (whiteCastle[1] && board[61] == null && board[62] == null && !isKingInCheck && checkIfKingValid([selected, selected + 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
           array.push([63, null])
+          array.push([62, null])
         }
       }
       else {
         if (blackCastle[0] && board[1] == null && board[2] == null && board[3] == null && !isKingInCheck && checkIfKingValid([selected, selected - 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
           array.push([0, null])
+          array.push([2, null])
         }
         if (blackCastle[1] && board[5] == null && board[6] == null && !isKingInCheck && checkIfKingValid([selected, selected + 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
           array.push([7, null])
+          array.push([6, null])
         }
       }
       break;

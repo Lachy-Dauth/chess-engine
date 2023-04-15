@@ -75,10 +75,10 @@ function makeGrid() {
     if (aiEval !== false && aiEval[1] != null && aiEval[1].includes(i)) {
       square.classList.add("aiMove");
     }
-    else if (validMoves.includes(i)) {
+    if (validMoves.includes(i)) {
       square.classList.add("valid");
     }
-    else if (moved.includes(i)) {
+    if (moved.includes(i)) {
       square.classList.add("moved");
     }
 
@@ -285,27 +285,27 @@ function movePiece(startingPos, endingPos) {
   else if (endingPos == 63 || startingPos == 63) {
     whiteCastle[1] = false;
   }
-  if (board[startingPos] == "k" && startingPos == 4 && endingPos == 0) {
+  if (board[startingPos] == "k" && startingPos == 4 && (endingPos == 2 || endingPos == 0)) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[0] = null;
     board[2] = "k";
     board[3] = "r";
   }
-  else if (board[startingPos] == "k" && startingPos == 4 && endingPos == 7) {
+  else if (board[startingPos] == "k" && startingPos == 4 && (endingPos == 6 || endingPos == 7)) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[7] = null;
     board[6] = "k";
     board[5] = "r";
   }
-  else if (board[startingPos] == "K" && startingPos == 60 && endingPos == 56) {
+  else if (board[startingPos] == "K" && startingPos == 60 && (endingPos == 58 || endingPos == 56)) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[56] = null;
     board[58] = "K";
     board[59] = "R";
   }
-  else if (board[startingPos] == "K" && startingPos == 60 && endingPos == 63) {
+  else if (board[startingPos] == "K" && startingPos == 60 && (endingPos == 62 || endingPos == 63)) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[63] = null;
     board[62] = "K";
     board[61] = "R";
   }

@@ -354,27 +354,27 @@ function movePieceAI([startingPos, endingPos, promotionPiece], old_board, old_wh
   else if (endingPos == 63 || startingPos == 63) {
     whiteCastle[1] = false;
   }
-  if (board[startingPos] == "k" && startingPos == 4 && endingPos == 0) {
+  if (board[startingPos] == "k" && startingPos == 4 && endingPos == 2) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[0] = null;
     board[2] = "k";
     board[3] = "r";
   }
-  else if (board[startingPos] == "k" && startingPos == 4 && endingPos == 7) {
+  else if (board[startingPos] == "k" && startingPos == 4 && endingPos == 6) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[7] = null;
     board[6] = "k";
     board[5] = "r";
   }
-  else if (board[startingPos] == "K" && startingPos == 60 && endingPos == 56) {
+  else if (board[startingPos] == "K" && startingPos == 60 && endingPos == 58) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[56] = null;
     board[58] = "K";
     board[59] = "R";
   }
-  else if (board[startingPos] == "K" && startingPos == 60 && endingPos == 63) {
+  else if (board[startingPos] == "K" && startingPos == 60 && endingPos == 62) {
     board[startingPos] = null;
-    board[endingPos] = null;
+    board[63] = null;
     board[62] = "K";
     board[61] = "R";
   }
@@ -718,18 +718,18 @@ function findValidMoves(board, selected, whitesTurn, enPassent, blackCastle, whi
       }
       if (colourSel) {
         if (whiteCastle[0] && board[57] == null && board[58] == null && board[59] == null && !isKingInCheck && checkIfKingValid([selected, selected - 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
-          array.push([56, null])
+          array.push([58, null])
         }
         if (whiteCastle[1] && board[61] == null && board[62] == null && !isKingInCheck && checkIfKingValid([selected, selected + 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
-          array.push([63, null])
+          array.push([62, null])
         }
       }
       else {
         if (blackCastle[0] && board[1] == null && board[2] == null && board[3] == null && !isKingInCheck && checkIfKingValid([selected, selected - 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
-          array.push([0, null])
+          array.push([2, null])
         }
         if (blackCastle[1] && board[5] == null && board[6] == null && !isKingInCheck && checkIfKingValid([selected, selected + 1, null], board, whitesTurn, enPassent, blackCastle, whiteCastle)) {
-          array.push([7, null])
+          array.push([6, null])
         }
       }
       break;
