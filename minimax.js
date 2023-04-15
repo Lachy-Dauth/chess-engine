@@ -430,7 +430,38 @@ function movePieceAI([startingPos, endingPos, promotionPiece], old_board, old_wh
   return [board, whitesTurn, enPassent, blackCastle, whiteCastle]
 }
 
-function hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle) {
-  let string = [enPassent == null ? 'o' : enPassent, ...board.map(char => char == null ? "o" : char), whitesTurn ? "w" : "b", ...whiteCastle.map(value => value ? "y" : "n"), ...blackCastle.map(value => value ? "y" : "n")].join("");
-  return string
+function hashPosition(board, isWhiteToMove, enPassantSquare, blackCastle, whiteCastle) {
+  let fen = "";
+
+  // Convert the board array back to fen ranks
+  for (let i = 0; i < board.length; i += 8) {
+    const rank = board.slice(i, i + 8).map(square => square === null ? '1' : square).join("");
+    let fenRank = "";
+    let emptySquares = 0;
+    for (let j = 0; j < rank.length; j++) {
+      if (rank[j] === '1') {
+        emptySquares++;
+      } else {
+        if (emptySquares > 0) {
+          fenRank += emptySquares.toString();
+          emptySquares = 0;
+        }
+        fenRank += rank[j];
+      }
+    }
+    if (emptySquares > 0) {
+      fenRank += emptySquares.toString();
+    }
+    fen += fenRank + "/";
+  }
+  fen = fen.slice(0, -1); // Remove the trailing '/' at the end of the fen
+
+  const enPassentPossible = enPassantSquare !== null && (isCapitalLetter(board[enPassantSquare]) ? (enPassantSquare%8 > 0 && board[enPassantSquare - 1] == "p") || (enPassantSquare%8 < 7 && board[enPassantSquare + 1] == "p") : (enPassantSquare%8 > 0 && board[enPassantSquare - 1] == "P") || (enPassantSquare%8 < 7 && board[enPassantSquare + 1] == "P"))
+
+  // Add other properties to the fen
+  fen += " " + (isWhiteToMove ? "w" : "b");
+  fen += " " + (whiteCastle[1] ? "K" : "") + (whiteCastle[0] ? "Q" : "") + (blackCastle[1] ? "k" : "") + (blackCastle[0] ? "q" : "");
+  fen += " " + (!enPassentPossible ? "-" : String.fromCharCode(enPassantSquare % 8 + 97) + (8 - Math.floor(enPassantSquare / 8) + (isWhiteToMove ? 1 : -1)).toString());
+
+  return fen;
 }
