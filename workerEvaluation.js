@@ -60,7 +60,7 @@ function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, wh
     return;
   }
   while (true) {
-    const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, timeLimit - (Date.now() - startTime), []);
+    const [value, move] = evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, -Infinity, Infinity, depth, []);
     transpositionTable = {};
     if (value !== null) {
       bestValue = value;
@@ -84,7 +84,7 @@ function iterativeDeepeningMinimax(board, whitesTurn, enPassent, blackCastle, wh
   }
 }
 
-function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit, previousPositionsMinimax) {
+function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, previousPositionsMinimax) {
   count += 1
   const hashOfPos = hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle);
   const bit64hash = cyrb53(hashOfPos)
@@ -92,7 +92,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     return [transpositionTable[bit64hash], null];
   }
   if (depth <= 0 && originalDepth != 0) {
-    let score = evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit)[0]
+    let score = evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth)[0]
     transpositionTable[bit64hash] = score
     return [score, null];
   }
@@ -104,7 +104,6 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     return [0, null]
   }
   previousPositionsMinimax.push(hashOfPos);
-  let startTime = Date.now();
   if (whitesTurn) {
     let max = -Infinity;
     let bestMove = 0;
@@ -121,11 +120,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     }
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime), previousPositionsMinimax)[0];
-      if (Date.now() - startTime >= timeLimit || score == null) {
-        // Time's up
-        return [null, null];
-      }
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, previousPositionsMinimax)[0];
       if (score > max) {
         max = score;
         bestMove = move;
@@ -157,11 +152,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     }
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime), previousPositionsMinimax)[0];
-      if (Date.now() - startTime >= timeLimit || score == null) {
-        // Time's up
-        return [null, null];
-      }
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, previousPositionsMinimax)[0];
       if (score < min) {
         min = score;
         bestMove = move;
@@ -179,14 +170,13 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
   }
 }
 
-function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth, timeLimit) {
+function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth) {
   count += 1
   const hashOfPos = hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle);
   const bit64hash = cyrb53(hashOfPos)
   if (bit64hash in transpositionTable) {
     return [transpositionTable[bit64hash], null];
   }
-  let startTime = Date.now();
   if (whitesTurn) {
     let max = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle);
     let bestMove = 0;
@@ -195,11 +185,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
     });
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime))[0];
-      if (Date.now() - startTime >= timeLimit || score == null) {
-        // Time's up
-        return [null, null];
-      }
+      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth)[0];
       if (score > max) {
         max = score;
         bestMove = move;
@@ -223,11 +209,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
     });
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, timeLimit - (Date.now() - startTime))[0];
-      if (Date.now() - startTime >= timeLimit || score == null) {
-        // Time's up
-        return [null, null];
-      }
+      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth)[0];
       if (score < min) {
         min = score;
         bestMove = move;
@@ -280,7 +262,8 @@ function evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle
   else {
     totalBlack += Math.round(piecesValues["kend"][blackKingPos] * (1 - (blackEndGame / 2000)))
   }
-  return Math.round((((totalWhite + totalBlack) * 178000) / (totalWhite - totalBlack + 100000)));
+
+  return Math.round((((totalWhite + totalBlack) * 17800) / (totalWhite - totalBlack + 10000)));
 }
 
 function generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle) {
