@@ -88,8 +88,8 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
   count += 1
   const hashOfPos = hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle);
   const bit64hash = cyrb53(hashOfPos)
-  if (bit64hash in transpositionTable) {
-    return [transpositionTable[bit64hash], null];
+  if (bit64hash in transpositionTable && transpositionTable[bit64hash][1] <= alpha && transpositionTable[bit64hash][2] >= beta) {
+    return [transpositionTable[bit64hash][0], null];
   }
   if (depth <= 0 && originalDepth != 0) {
     let score = evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCastle, depth, alpha, beta, originalDepth)[0]
@@ -108,8 +108,8 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     let max = -Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      scoreTwo = cyrb53(hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))) in old_transpositionTable ? old_transpositionTable[cyrb53(hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)))] : evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
-      scoreOne = cyrb53(hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))) in old_transpositionTable ? old_transpositionTable[cyrb53(hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)))] : evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreTwo = evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreOne = evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
       return scoreTwo - scoreOne
     });
     if (allValidMoves.length == 0) {
@@ -120,7 +120,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     }
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, previousPositionsMinimax)[0];
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1 - Math.floor(i/10), alpha, beta, originalDepth, previousPositionsMinimax)[0];
       if (score > max) {
         max = score;
         bestMove = move;
@@ -132,16 +132,15 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
         break;
       }
     }
-    transpositionTable[bit64hash] = max;
-    old_transpositionTable[bit64hash] = max;
+    transpositionTable[bit64hash] = [max, alpha, beta];
     return [max, bestMove];
   }
   else {
     let min = Infinity;
     let bestMove = 0;
     let allValidMoves = generateAllValidMoves(board, whitesTurn, enPassent, blackCastle, whiteCastle).sort((moveOne, moveTwo) => {
-      scoreTwo = cyrb53(hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))) in old_transpositionTable ? old_transpositionTable[cyrb53(hashPosition(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle)))] : evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
-      scoreOne = cyrb53(hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))) in old_transpositionTable ? old_transpositionTable[cyrb53(hashPosition(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle)))] : evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreTwo = evaluationDepth0(...movePieceAI(moveTwo, board, whitesTurn, enPassent, blackCastle, whiteCastle))
+      scoreOne = evaluationDepth0(...movePieceAI(moveOne, board, whitesTurn, enPassent, blackCastle, whiteCastle))
       return scoreOne - scoreTwo
     });
     if (allValidMoves.length == 0){
@@ -152,7 +151,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
     }
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth, previousPositionsMinimax)[0];
+      let score = evaluation(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1 - Math.floor(i/10), alpha, beta, originalDepth, previousPositionsMinimax)[0];
       if (score < min) {
         min = score;
         bestMove = move;
@@ -164,8 +163,7 @@ function evaluation(board, whitesTurn, enPassent, blackCastle, whiteCastle, dept
         break;
       }
     }
-    old_transpositionTable[bit64hash] = min;
-    transpositionTable[bit64hash] = min;
+    transpositionTable[bit64hash] = [min, alpha, beta];
     return [min, bestMove];
   }
 }
@@ -174,8 +172,8 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
   count += 1
   const hashOfPos = hashPosition(board, whitesTurn, enPassent, blackCastle, whiteCastle);
   const bit64hash = cyrb53(hashOfPos)
-  if (bit64hash in transpositionTable) {
-    return [transpositionTable[bit64hash], null];
+  if (bit64hash in transpositionTable && transpositionTable[bit64hash][1] <= alpha && transpositionTable[bit64hash][2] >= beta) {
+    return [transpositionTable[bit64hash][0], null];
   }
   if (whitesTurn) {
     let max = evaluationDepth0(board, whitesTurn, enPassent, blackCastle, whiteCastle);
@@ -185,7 +183,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
     });
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth)[0];
+      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1 - Math.floor(i/3), alpha, beta, originalDepth)[0];
       if (score > max) {
         max = score;
         bestMove = move;
@@ -197,8 +195,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
         break;
       }
     }
-    transpositionTable[bit64hash] = max;
-    old_transpositionTable[bit64hash] = max;
+    transpositionTable[bit64hash] = [max, alpha, beta];
     return [max, bestMove];
   }
   else {
@@ -209,7 +206,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
     });
     for (let i = 0; i < allValidMoves.length; i++) {
       let move = allValidMoves[i];
-      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1, alpha, beta, originalDepth)[0];
+      let score = evaluationCaptures(...movePieceAI(move, board, whitesTurn, enPassent, blackCastle, whiteCastle), depth - 1 - Math.floor(i/3), alpha, beta, originalDepth)[0];
       if (score < min) {
         min = score;
         bestMove = move;
@@ -221,8 +218,7 @@ function evaluationCaptures(board, whitesTurn, enPassent, blackCastle, whiteCast
         break;
       }
     }
-    transpositionTable[bit64hash] = min;
-    old_transpositionTable[bit64hash] = min;
+    transpositionTable[bit64hash] = [min, alpha, beta];
     return [min, bestMove];
   }
 }

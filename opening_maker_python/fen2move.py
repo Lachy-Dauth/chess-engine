@@ -4,10 +4,6 @@ stockfish = Stockfish("/opt/homebrew/bin/stockfish", parameters={"Threads": 4})
 
 fen_dict = {}
 
-move = 'e2e4'
-result = [ord(move[0]) - 97 + (8 - int(move[1]) * 8), ord(move[2]) - 97 + (8 - int(move[3]) * 8)]
-print(ord(move[0]) - 97, ((8 - int(move[1])) * 8), ord(move[2]) - 97, ((8 - int(move[3])) * 8), result)
-
 with open("./book.csv", "w") as bookfile:
   bookfile.write("{\n")
   with open("./fens2.csv", "r") as fenfile:
